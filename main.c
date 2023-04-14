@@ -14,18 +14,24 @@ int main(int ac, char **argv)
 {
         char *prompt = "(Gitshell) $ ";
         char *lineptr;
-        size_t n = 0;
+        size_t m = 0;
 
 /* declaring void variables */
         (void)ac; (void)argv;
 
-        for (int i = 0; prompt[i] != '\0'; i++)
+        for (int a = 0; prompt[a] != '\0'; a++)
         {
-                putchar(prompt[i]);
+                putchar(prompt[a]);
+        }
+	/* creating an infinite loop */
+        while (1)
+        {
+                putchar(prompt[a]);
         }
 
-        getline(&lineptr, &n, stdin);
+        getline(&lineptr, &m, stdin);
         printf("%s\n", lineptr);
+	/*free up allocated memory*/
 
         free(lineptr);
         return (0);
