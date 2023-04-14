@@ -15,11 +15,13 @@ int main(int ac, char **argv)
 /* void variables */
 	(void)ac;
 	(void)argv;
+	while(1){
 	printf("%s", prompt);
 /* to get what user types */
 	getline(&lineptr, &m, stdin);
 	printf("%s", lineptr);
 	free(lineptr);
+	}
 	return (0);
 }
 
