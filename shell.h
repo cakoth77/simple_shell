@@ -1,4 +1,4 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int bc, char **argv);
+int main(int ac, char **av);
