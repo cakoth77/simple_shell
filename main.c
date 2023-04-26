@@ -5,7 +5,7 @@
  * main - writes a string to the standard output stream
  * Return: count
  */
-void execmd(char **argv);
+
 int main(void)
 {
 char *prompt = "(Wood) $ ";
@@ -17,7 +17,7 @@ int num_tokens = 0;
 char *token;
 int i;
 char **argv;
-  
+
 while (1)
 {
 for (i = 0; prompt[i] != '\0'; i++)
