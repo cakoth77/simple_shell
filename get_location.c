@@ -1,5 +1,9 @@
 #include "main.h"
-
+/**
+ * get_location - writes a string to the standard output stream
+ * @command: pointer to a constant character string
+ * Return: count
+ */
 char *get_location(char *command)
 {
 char *path, *path_copy, *path_token, *file_path;
@@ -7,13 +11,11 @@ int command_length, directory_length;
 struct stat buffer;
 
 path = getenv("PATH");
-
 if (path)
 {
 path_copy = our_strdup(path);
 command_length = our_strlen(command, 1024);
 path_token = strtok(path_copy, ":");
-
 while (path_token != NULL)
 {
 directory_length = strlen(path_token);

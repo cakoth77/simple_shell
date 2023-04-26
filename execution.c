@@ -9,42 +9,15 @@ void execmd(char **argv)
 {
 pid_t pid;
 int status;
-int i;
 char *holder = NULL, *holder2[1010];
+int worked;
 
-/* checking if command is a built-in */
-if (our_strcmp(argv[0], "exit") == 0)
+worked = builtinss(argv);
+if (worked == 0)
 {
-/* check if an argument was provided */
-if (argv[1] != NULL)
-{
-/* convert argument to integer and exit with that status */
-exit(atoi(argv[1]));
+return;
 }
-else
-{
-/* exit with status 0 */
-exit(0);
-}
-}
-else if (our_strcmp(argv[0], "env") == 0)
-{
-/* print current environment */
-char **env = environ;
-while (*env != NULL)
-{
-for (i = 0; (*env)[i] != '\0'; i++)
-{
-our_putchar((*env)[i]);
-}
-our_putchar('\n');
-env++;
-}
-}
-else
-{
 holder2[0] = get_location(argv[0]);
-printf("add: %s", holder);
 
 if (access(holder2[0], X_OK) == -1)
 {
@@ -66,7 +39,6 @@ return;
 else
 {
 waitpid(pid, &status, 0);
-}
 }
 }
 
@@ -106,7 +78,6 @@ tkns[tkn_count] = tkn;
 tkn = strtok(NULL, delim);
 tkn_count++;
 }
-/*Output the tokens using putchar*/
 for (i = 0; i < tkn_count; i++)
 {
 char *current_tkn = tkns[i];
@@ -115,10 +86,9 @@ while (*current_tkn != '\0')
 our_putchar(*current_tkn);
 current_tkn++;
 }
-our_putchar(' '); /*prints the space between tokens*/
+our_putchar(' ');
 }
-our_putchar('\n'); /*print a newline character at the end*/
-
+our_putchar('\n');
 return (tkn_count);
 }
 

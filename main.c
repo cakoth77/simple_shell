@@ -6,8 +6,13 @@
  */
 void execmd(char **argv);
 /**
+<<<<<<< HEAD
  * main - entry point
  * Return: Always 0
+=======
+ * main - writes a string to the standard output stream
+ * Return: count
+>>>>>>> f11b0b3 (simple_shell)
  */
 int main(void)
 {

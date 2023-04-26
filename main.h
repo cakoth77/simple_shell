@@ -28,6 +28,7 @@ int (*func)(char **args);
 } builtin_t;
 
 int execute_builtin(char **args);
+int builtinss(char **argv);
 
 /*additionalfxns.c fucntions - string manipulation functions*/
 int our_putchar(char c);

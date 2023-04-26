@@ -34,7 +34,7 @@ return (*dest);
 /**
  * our_strlen - returns the length of a string
  * @strn: the string
- * maxl: maximum length of the string
+ * @maxl: maximum length of the string
  * Return: string length
  */
 size_t our_strlen(char *strn, size_t maxl)
@@ -92,36 +92,4 @@ source++;
 }
 *destination = '\0';
 return (0);
-}
-/**
- * our_puts - writes a string to the standard output stream
- * @__s: pointer to a constant character string
- * Return: count
- */
-
-int our_puts(const char *__s)
-{
-int count = 0;
-while (*__s != '\0')
-{
-count += putchar(*__s++);
-}
-count += putchar('\n');
-return (count);
-}
-/**
- * our_strdup - a user-defined function that duplicates a given string
- * @str: string to be duplicated
- * Return: new_str
- */
-
-char *our_strdup(const char *str)
-{
-size_t len = strlen(str) + 1;
-char *new_str = malloc(len);
-if (new_str != NULL)
-{
-memcpy(new_str, str, len);
-}
-return (new_str);
 }
