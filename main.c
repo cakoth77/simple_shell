@@ -1,43 +1,88 @@
-#include "shell.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
-/**
- * main - entry point
- * @ac: arg count
- * @av: arg vector
- * Return: 0 on success, 1 on error
- */
-int main(int ac, char **av)
+#include "main.h"
+
+void execmd(char **argv);
+
+int main(void)
 {
-info_t info[] = { INFO_INIT };
-int fd = 2;
-fd = dup(STDERR_FILENO);
-if (fd == -1)
-return (EXIT_FAILURE);
-if (ac == 2)
+char *prompt = "(Wood) $ ";
+char *lineptr = NULL, *lineptr_copy = NULL;
+size_t m = 0;
+ssize_t read_chars;
+const char *delim = " \n";
+int num_tokens = 0;
+char *token;
+int i;
+char **argv;
+
+/*creating a loop for the prompt*/
+while (1)
 {
-fd = open(av[1], O_RDONLY | O_CREAT, 0644);
-if (fd == -1)
+/*printing the prompt character by character*/
+for (i = 0; prompt[i] != '\0'; i++)
 {
-if (errno == EACCES)
-exit(126);
-if (errno == ENOENT)
-{
-write(STDERR_FILENO, av[0], strlen(av[0]));
-write(STDERR_FILENO, ": 0: Can't open ", 17);
-write(STDERR_FILENO, av[1], strlen(av[1]));
-write(STDERR_FILENO, "\n", 1);
-exit(127);
+our_putchar(prompt[i]);
 }
-return (EXIT_FAILURE);
+read_chars = getline(&lineptr, &m, stdin);
+/*checking if the getline function failed or reached EOF or CTRL + D*/
+if (read_chars == -1)
+{
+for (i = 0; "Exiting....\n"[i] != '\0'; i++)
+{
+our_putchar("Exiting....\n"[i]);
 }
-info->readfd = fd;
+break;
 }
-populate_env_list(info);
-read_history(info);
-hsh(info, av);
-return (EXIT_SUCCESS);
+/*checking if the user input is "Exiting...."*/
+if (our_strcmp(lineptr, "Exiting....\n") == 0)
+{
+break;
+}
+/*allocating space for a copy of the lineptr */
+lineptr_copy = malloc(sizeof(char) * (read_chars + 1));
+if (lineptr_copy == NULL)
+{
+perror("tsh: memory allocation error");
+return (-1);
+}
+/*copying the lineptr to lineptr_copy*/
+our_strcpy(lineptr_copy, lineptr);
+
+/** splitting the string (lineptr) into an array of words **/
+/*calculating the total number of tokens*/
+token = strtok(lineptr, delim);
+
+while (token != NULL)
+{
+num_tokens++;
+token = strtok(NULL, delim);
+}
+num_tokens++;
+/*Allocating space to hold the array of strings*/
+argv = malloc(sizeof(char *) * num_tokens);
+if (argv == NULL)
+{
+perror("tsh: memory allocation error");
+return (-1);
+}
+/*storing each token in the argv array*/
+token = strtok(lineptr_copy, delim);
+
+for (i = 0; token != NULL; i++)
+{
+argv[i] = malloc(sizeof(char) * our_strlen(token, 1024) + 1);
+our_strcpy(argv[i], token);
+token = strtok(NULL, delim);
+}
+argv[i] = NULL;
+/*execution command*/
+execmd(argv);
+}
+/*freeing up the allocated memory*/
+for (i = 0; i < num_tokens; i++)
+{
+free(argv[i]);
+}
+free(lineptr_copy);
+free(lineptr);
+return (0);
 }
