@@ -110,12 +110,12 @@ count += putchar('\n');
 return (count);
 }
 /**
- * my_strdup - a user-defined function that duplicates a given string
+ * our_strdup - a user-defined function that duplicates a given string
  * @str: string to be duplicated
  * Return: new_str
  */
 
-char *my_strdup(const char *str)
+char *our_strdup(const char *str)
 {
 size_t len = strlen(str) + 1;
 char *new_str = malloc(len);

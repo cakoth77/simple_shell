@@ -38,5 +38,5 @@ size_t our_strlen(char *strn, size_t maxl);
 int our_strcmp(const char *str1, const char *str2);
 char our_strcat(char *destination, const char *source);
 int our_puts(const char *__s);
-char *my_strdup(const char *str);
+char *our_strdup(const char *str);
 #endif
