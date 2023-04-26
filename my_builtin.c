@@ -2,11 +2,7 @@
 
 /**
  * our_exit - exits our shell
-<<<<<<< HEAD
- * @args: argument
-=======
  * @args: arguments
->>>>>>> f11b0b3 (simple_shell)
  * Return: 0
 */
 int our_exit(char **args)
