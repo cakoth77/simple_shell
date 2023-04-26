@@ -2,6 +2,7 @@
 
 /**
  * our_exit - exits our shell
+ * @args: argument
  * Return: 0
 */
 
