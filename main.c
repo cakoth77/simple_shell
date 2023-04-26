@@ -1,66 +1,47 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_INPUT_LENGTH 1024
 /**
  * main - entry point
  * Return: Always 0
- * main - writes a string to the standard output stream
- * Return: count
  */
-
 int main(void)
 {
 char *prompt = "(Wood) $ ";
-char *lineptr = NULL, *lineptr_copy = NULL;
-size_t m = 0;
-ssize_t read_chars;
-const char *delim = " \n";
-int num_tokens = 0;
-char *token;
-int i;
-char **argv;
-
+char *line = NULL;
+size_t len = 0;
+ssize_t read;
 while (1)
 {
-for (i = 0; prompt[i] != '\0'; i++)
+write(STDOUT_FILENO, prompt, strlen(prompt));
+read = getline(&line, &len, stdin);
+if (read == -1)
 {
-our_putchar(prompt[i]);
+break;
 }
-read_chars = getline(&lineptr, &m, stdin);
-lineptr_copy = malloc(sizeof(char) * (read_chars + 1));
-if (lineptr_copy == NULL)
+if (line[read - 1] == '\n')
 {
-perror("tsh: memory allocation error");
-return (-1);
+line[read - 1] = '\0';
 }
-our_strcpy(lineptr_copy, lineptr);
-token = strtok(lineptr, delim);
-while (token != NULL)
+char **tokens = NULL;
+char *token = strtok(line, " ");
+int num_tokens = 0;
+while (token)
 {
 num_tokens++;
-token = strtok(NULL, delim);
+tokens = realloc(tokens, sizeof(char *) * num_tokens);
+tokens[num_tokens - 1] = token;
+token = strtok(NULL, " ");
 }
-num_tokens++;
-argv = malloc(sizeof(char *) * num_tokens);
-if (argv == NULL)
-{
-perror("tsh: memory allocation error");
-return (-1);
+tokens = realloc(tokens, sizeof(char *) * (num_tokens + 1));
+tokens[num_tokens] = NULL;
+/* Execute command here */
+/* ... */
+free(tokens);
 }
-token = strtok(lineptr_copy, delim);
-for (i = 0; token != NULL; i++)
-{
-argv[i] = malloc(sizeof(char) * our_strlen(token, 1024) + 1);
-our_strcpy(argv[i], token);
-token = strtok(NULL, delim);
-}
-argv[i] = NULL;
-execmd(argv);
-}
-for (i = 0; i < num_tokens; i++)
-{
-free(argv[i]);
-}
-free(lineptr_copy);
-free(lineptr);
+free(line);
 return (0);
 }
-
