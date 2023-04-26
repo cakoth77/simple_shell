@@ -1,7 +1,14 @@
 #include "main.h"
-
+/**
+ * execmd - executes arguments
+ * @argv: argument
+ * Return: Always 0
+ */
 void execmd(char **argv);
-
+/**
+ * main - entry point
+ * Return: Always 0
+ */
 int main(void)
 {
 char *prompt = "(Wood) $ ";
