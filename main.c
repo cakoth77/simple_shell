@@ -1,34 +1,56 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
+#include "main.h"
 /**
  * main - entry point
- * @ac: arg count
- * @av: arg vector
- * Return: 0 on success, 1 on error
+ * @argv: argument
+ * Return: always 0
  */
-int main(int ac, char **av)
+void execmd(char **argv);
+int main(void)
 {
-info_t info[] = { INFO_INIT };
-int fd = 2;
-fd = dup(STDERR_FILENO);
-if (fd == -1)
-return (EXIT_FAILURE);
-if (ac == 2)
+char *prompt = "(Wood) $ ";
+char *lineptr = NULL;
+size_t m = 0;
+ssize_t read_chars;
+const char *delim = " \n";
+char **argv;
+int i;
+while (1)
 {
-fd = open(av[1], O_RDONLY | O_CREAT, 0644);
-if (fd == -1)
+for (i = 0; prompt[i]; i++)
+our_putchar(prompt[i]);
+read_chars = getline(&lineptr, &m, stdin);
+if (read_chars == -1)
 {
-if (errno == EACCES)
-exit(126);
-if (errno == ENOENT)
-{
-write(STDERR_FILENO, av[0], strlen(av[0]));
-write(STDERR_FILENO, ": 0: Can't open ", 17);
-write(STDERR_FILENO, av[1], strlen(av[1]));
-write(STDERR_FILENO, "\n", 1);
-exit(127);
+if (our_strcmp(lineptr, "Exiting....\n") == 0)
+break;
 }
-return (EXIT_FAILURE);
+if (our_strcmp(lineptr, "Exiting....\n") == 0)
+break;
+int num_tokens = 0;
+char *token = strtok(lineptr, delim);
+while (token)
+{
+num_tokens++;
+token = strtok(NULL, delim);
+}
+argv = malloc(sizeof(char *) * (num_tokens + 1));
+if (!argv)
+{
+perror("tsh: memory allocation error");
+return (-1);
+}
+token = strtok(lineptr, delim);
+for (i = 0; token; i++)
+{
+argv[i] = strdup(token);
+token = strtok(NULL, delim);
+}
+argv[i] = NULL;
+execmd(argv);
+for (i = 0; argv[i]; i++)
+free(argv[i]);
+free(argv);
+}
+free(lineptr);
+return (0);
+}
