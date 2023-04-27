@@ -1,74 +1,34 @@
-#include "main.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <fcntl.h>
 /**
  * main - entry point
- * @argv: argument
- * Return: Always 0
+ * @ac: arg count
+ * @av: arg vector
+ * Return: 0 on success, 1 on error
  */
-void execmd(char **argv);
-int main(void)
+int main(int ac, char **av)
 {
-char *prompt = "(Wood) $ ";
-char *lineptr = NULL, *lineptr_copy = NULL;
-size_t m = 0;
-ssize_t read_chars;
-const char *delim = " \n";
-int num_tokens = 0;
-char *token;
-int i;
-char **argv;
-while (1)
+info_t info[] = { INFO_INIT };
+int fd = 2;
+fd = dup(STDERR_FILENO);
+if (fd == -1)
+return (EXIT_FAILURE);
+if (ac == 2)
 {
-for (i = 0; prompt[i] != '\0'; i++)
+fd = open(av[1], O_RDONLY | O_CREAT, 0644);
+if (fd == -1)
 {
-our_putchar(prompt[i]);
-}
-read_chars = getline(&lineptr, &m, stdin);
-(read_chars == -1)
+if (errno == EACCES)
+exit(126);
+if (errno == ENOENT)
 {
-our_putstr("Exiting....\n");
-break;
+write(STDERR_FILENO, av[0], strlen(av[0]));
+write(STDERR_FILENO, ": 0: Can't open ", 17);
+write(STDERR_FILENO, av[1], strlen(av[1]));
+write(STDERR_FILENO, "\n", 1);
+exit(127);
 }
-if (our_strcmp(lineptr, "Exiting....\n") == 0)
-{
-break;
-}
-lineptr_copy = malloc(sizeof(char) * (read_chars + 1));
-if (lineptr_copy == NULL)
-{
-perror("tsh: memory allocation error");
-return (-1);
-}
-our_strcpy(lineptr_copy, lineptr);
-token = strtok(lineptr, delim);
-while (token != NULL)
-{
-num_tokens++;
-token = strtok(NULL, delim);
-}
-num_tokens++;
-argv = malloc(sizeof(char *) * num_tokens);
-if (argv == NULL)
-{
-perror("tsh: memory allocation error");
-return (-1);
-}
-token = strtok(lineptr_copy, delim);
-for (i = 0; token != NULL; i++)
-{
-argv[i] = malloc(sizeof(char) * our_strlen(token, 1024) + 1);
-our_strcpy(argv[i], token);
-token = strtok(NULL, delim);
-}
-argv[i] = NULL;
-execmd(argv);
-for (i = 0; i < num_tokens; i++)
-{
-free(argv[i]);
-}
-free(argv);
-free(lineptr_copy);
-free(lineptr);
-num_tokens = 0;
-}
-return (0);
-}
+return (EXIT_FAILURE);
