@@ -28,7 +28,6 @@ int (*func)(char **args);
 } builtin_t;
 
 int execute_builtin(char **args);
-int builtinss(char **argv);
 
 /*additionalfxns.c fucntions - string manipulation functions*/
 int our_putchar(char c);
@@ -39,5 +38,5 @@ size_t our_strlen(char *strn, size_t maxl);
 int our_strcmp(const char *str1, const char *str2);
 char our_strcat(char *destination, const char *source);
 int our_puts(const char *__s);
-char *our_strdup(const char *str);
+char *my_strdup(const char *str);
 #endif

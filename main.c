@@ -1,61 +1,56 @@
 #include "main.h"
 /**
  * main - entry point
- * Return: Always 0
+ * @argv: argument
+ * Return: always 0
  */
+void execmd(char **argv);
 int main(void)
 {
 char *prompt = "(Wood) $ ";
-char *lineptr = NULL, *lineptr_copy = NULL;
+char *lineptr = NULL;
 size_t m = 0;
 ssize_t read_chars;
 const char *delim = " \n";
-int num_tokens = 0;
-char *token;
-int i;
 char **argv;
+int i;
 while (1)
 {
-for (i = 0; prompt[i] != '\0'; i++)
-{
+for (i = 0; prompt[i]; i++)
 our_putchar(prompt[i]);
-}
 read_chars = getline(&lineptr, &m, stdin);
-lineptr_copy = malloc(sizeof(char) * (read_chars + 1));
-if (lineptr_copy == NULL)
+if (read_chars == -1)
 {
-perror("tsh: memory allocation error");
-return (-1);
+if (our_strcmp(lineptr, "Exiting....\n") == 0)
+break;
 }
-our_strcpy(lineptr_copy, lineptr);
-token = strtok(lineptr, delim);
-while (token != NULL)
+if (our_strcmp(lineptr, "Exiting....\n") == 0)
+break;
+int num_tokens = 0;
+char *token = strtok(lineptr, delim);
+while (token)
 {
 num_tokens++;
 token = strtok(NULL, delim);
 }
-num_tokens++;
-argv = malloc(sizeof(char *) * num_tokens);
-if (argv == NULL)
+argv = malloc(sizeof(char *) * (num_tokens + 1));
+if (!argv)
 {
 perror("tsh: memory allocation error");
 return (-1);
 }
-token = strtok(lineptr_copy, delim);
-for (i = 0; token != NULL; i++)
+token = strtok(lineptr, delim);
+for (i = 0; token; i++)
 {
-argv[i] = malloc(sizeof(char) * our_strlen(token, 1024) + 1);
-our_strcpy(argv[i], token);
+argv[i] = strdup(token);
 token = strtok(NULL, delim);
 }
 argv[i] = NULL;
 execmd(argv);
-}
-for (i = 0; i < num_tokens; i++)
-{
+for (i = 0; argv[i]; i++)
 free(argv[i]);
+free(argv);
 }
-free(lineptr_copy);
 free(lineptr);
 return (0);
 }
