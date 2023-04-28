@@ -1,0 +1,71 @@
+==710== Memcheck, a memory error detector
+==710== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==710== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==710== Command: ./simpshell
+==710== Parent PID: 594
+==710== 
+==710== Conditional jump or move depends on uninitialised value(s)
+==710==    at 0x1094EF: our_strcpy (in /simple_shell/simpshell)
+==710==    by 0x109C9F: main (in /simple_shell/simpshell)
+==710== 
+==710== Invalid write of size 1
+==710==    at 0x1094FE: our_strcpy (in /simple_shell/simpshell)
+==710==    by 0x109C9F: main (in /simple_shell/simpshell)
+==710==  Address 0x4a49540 is 0 bytes after a block of size 0 alloc'd
+==710==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==710==    by 0x109C6B: main (in /simple_shell/simpshell)
+==710== 
+==710== Invalid read of size 1
+==710==    at 0x109505: our_strcpy (in /simple_shell/simpshell)
+==710==    by 0x109C9F: main (in /simple_shell/simpshell)
+==710==  Address 0x4a49540 is 0 bytes after a block of size 0 alloc'd
+==710==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==710==    by 0x109C6B: main (in /simple_shell/simpshell)
+==710== 
+==710== Conditional jump or move depends on uninitialised value(s)
+==710==    at 0x48F437C: strtok_r (strtok_r.c:49)
+==710==    by 0x109CB2: main (in /simple_shell/simpshell)
+==710== 
+==710== Invalid read of size 1
+==710==    at 0x48F4377: strtok_r (strtok_r.c:49)
+==710==    by 0x109D21: main (in /simple_shell/simpshell)
+==710==  Address 0x4a49540 is 0 bytes after a block of size 0 alloc'd
+==710==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==710==    by 0x109C6B: main (in /simple_shell/simpshell)
+==710== 
+==710== Invalid read of size 1
+==710==    at 0x109590: our_strcmp (in /simple_shell/simpshell)
+==710==    by 0x10964C: builtinss (in /simple_shell/simpshell)
+==710==    by 0x10975E: execmd (in /simple_shell/simpshell)
+==710==    by 0x109DD1: main (in /simple_shell/simpshell)
+==710==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==710== 
+==710== 
+==710== Process terminating with default action of signal 11 (SIGSEGV): dumping core
+==710==  Access not within mapped region at address 0x0
+==710==    at 0x109590: our_strcmp (in /simple_shell/simpshell)
+==710==    by 0x10964C: builtinss (in /simple_shell/simpshell)
+==710==    by 0x10975E: execmd (in /simple_shell/simpshell)
+==710==    by 0x109DD1: main (in /simple_shell/simpshell)
+==710==  If you believe this happened as a result of a stack
+==710==  overflow in your program's main thread (unlikely but
+==710==  possible), you can try to increase the size of the
+==710==  main thread stack using the --main-stacksize= flag.
+==710==  The main thread stack size used in this run was 8388608.
+==710== 
+==710== HEAP SUMMARY:
+==710==     in use at exit: 128 bytes in 3 blocks
+==710==   total heap usage: 4 allocs, 1 frees, 1,152 bytes allocated
+==710== 
+==710== LEAK SUMMARY:
+==710==    definitely lost: 0 bytes in 0 blocks
+==710==    indirectly lost: 0 bytes in 0 blocks
+==710==      possibly lost: 0 bytes in 0 blocks
+==710==    still reachable: 128 bytes in 3 blocks
+==710==         suppressed: 0 bytes in 0 blocks
+==710== Reachable blocks (those to which a pointer was found) are not shown.
+==710== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==710== 
+==710== Use --track-origins=yes to see where uninitialised values come from
+==710== For lists of detected and suppressed errors, rerun with: -s
+==710== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)
